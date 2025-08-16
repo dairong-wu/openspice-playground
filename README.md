@@ -1,20 +1,18 @@
-# ⚡ OpenSPICE Playground
+# OpenSPICE Playground
 
 A web-based circuit simulator powered by ngspice and Streamlit. Design, simulate, and analyze electronic circuits directly in your browser with an intuitive interface and real-time visualization.
 
-![OpenSPICE Playground](assets/screenshot.png)
+## Features
 
-## ✨ Features
+- **Interactive Netlist Editor** - Write and edit SPICE netlists with syntax highlighting
+- **Pre-built Examples** - Load ready-to-use circuit examples with one click
+- **Parametric Circuit Generator** - Generate circuits with customizable parameters
+- **Interactive Waveform Viewer** - Visualize simulation results with matplotlib
+- **Export Capabilities** - Download results as CSV or RAW format
+- **Security First** - Sandboxed execution with command filtering
+- **Resource Protection** - Automatic timeout and temporary file management
 
-- 📝 **Interactive Netlist Editor** - Write and edit SPICE netlists with syntax highlighting
-- 🎯 **Pre-built Examples** - Load ready-to-use circuit examples with one click
-- 🔧 **Parametric Circuit Generator** - Generate circuits with customizable parameters
-- 📊 **Interactive Waveform Viewer** - Visualize simulation results with matplotlib
-- 📁 **Export Capabilities** - Download results as CSV or RAW format
-- 🔒 **Security First** - Sandboxed execution with command filtering
-- ⏱️ **Resource Protection** - Automatic timeout and temporary file management
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Local Installation
 
@@ -48,19 +46,7 @@ streamlit run app.py
 
 5. **Open your browser to** `http://localhost:8501`
 
-### 🐳 Docker
-
-```bash
-# Build the image
-docker build -t openspice-playground .
-
-# Run the container
-docker run -p 7860:7860 openspice-playground
-```
-
-Access the application at `http://localhost:7860`
-
-## 📖 Usage Guide
+## Usage Guide
 
 ### Basic Workflow
 
@@ -129,30 +115,14 @@ Q1 out base emit QNPN
 .end
 ```
 
-## 🔒 Security Features
+## Security Features
 
 - **Command Filtering**: Dangerous commands like `.shell`, `!`, and file system access are blocked
 - **Sandboxed Execution**: All simulations run in temporary directories
 - **Timeout Protection**: Default 10-second timeout (configurable via `NGSPICE_TIMEOUT`)
 - **Path Sanitization**: Prevents directory traversal and absolute path access
 
-## 🚀 Deployment
-
-### Hugging Face Spaces
-
-1. Create a new Space on [Hugging Face](https://huggingface.co/spaces)
-2. Select "Docker" as the SDK
-3. Upload this repository
-4. The app will automatically deploy
-
-### Streamlit Cloud
-
-1. Fork this repository
-2. Connect to [Streamlit Cloud](https://streamlit.io/cloud)
-3. Deploy with default settings
-4. Add `ngspice` to system packages in Advanced Settings
-
-## 🧪 Testing
+## Testing
 
 Run the test suite:
 ```bash
@@ -166,7 +136,7 @@ pytest tests/ --cov=core
 CI_SKIP_HEAVY=true pytest tests/
 ```
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 openspice-playground/
@@ -179,19 +149,9 @@ openspice-playground/
 │  └─ utils.py            # Utilities
 ├─ tests/                 # Test suite
 ├─ requirements.txt       # Python dependencies
-├─ Dockerfile            # Container definition
+├─ LICENSE               # License file
 └─ README.md             # Documentation
 ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
