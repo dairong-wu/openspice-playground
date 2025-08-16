@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.9, '3.10', 3.11]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ngspice
+        ngspice --version
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      env:
+        CI_SKIP_HEAVY: true
+      run: |
+        pytest tests/ -v
+    
+    - name: Check code quality
+      run: |
+        pip install ruff
+        ruff check . --ignore E501
+  
+  docker:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        docker build -t openspice-playground .
+    
+    - name: Test Docker image
+      run: |
+        docker run --rm openspice-playground ngspice --version
