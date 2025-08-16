@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Tuple, Optional
 import time
 
-
+# Default timeout in seconds (can be overridden by environment variable)
 DEFAULT_TIMEOUT = int(os.environ.get('NGSPICE_TIMEOUT', '10'))
 
 def run_ngspice(netlist: str, timeout: int = DEFAULT_TIMEOUT) -> Tuple[bool, str, Optional[str]]:
@@ -25,27 +25,27 @@ def run_ngspice(netlist: str, timeout: int = DEFAULT_TIMEOUT) -> Tuple[bool, str
         (success, log_content, raw_file_path)
     """
     
-
+    # Create temporary directory for safe execution
     with tempfile.TemporaryDirectory(prefix='ngspice_') as tmpdir:
         try:
-
+            # Write netlist to temporary file
             netlist_path = Path(tmpdir) / 'input.cir'
             netlist_path.write_text(netlist)
             
-
+            # Output paths
             log_path = Path(tmpdir) / 'stdout.log'
             raw_path = Path(tmpdir) / 'output.raw'
             
-
+            # Construct ngspice command
             cmd = [
                 'ngspice',
-
-
-
-
+                '-b',              # Batch mode
+                '-o', str(log_path),  # Output log
+                '-r', str(raw_path),  # Raw output file
+                str(netlist_path)     # Input netlist
             ]
             
-
+            # Run ngspice with timeout
             start_time = time.time()
             process = subprocess.Popen(
                 cmd,
@@ -63,7 +63,7 @@ def run_ngspice(netlist: str, timeout: int = DEFAULT_TIMEOUT) -> Tuple[bool, str
                 stdout, stderr = process.communicate()
                 return False, f"Simulation timeout after {timeout} seconds", None
             
-
+            # Read log file
             log_content = ""
             if log_path.exists():
                 log_content = log_path.read_text()
@@ -75,11 +75,11 @@ def run_ngspice(netlist: str, timeout: int = DEFAULT_TIMEOUT) -> Tuple[bool, str
             
             log_content += f"\n\nExecution time: {execution_time:.2f} seconds"
             
-
+            # Check if simulation was successful
             success = process.returncode == 0 and raw_path.exists()
             
             if success:
-
+                # Copy raw file to a persistent location
                 persistent_raw = tempfile.NamedTemporaryFile(
                     mode='wb',
                     suffix='.raw',
